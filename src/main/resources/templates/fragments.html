@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}"></title>
+</head>
+<body>
+    <div class="nav" th:fragment="navigation">
+        <div class="btn-group-lg btn-group">
+            <a class="btn btn-primary m-1" role="button" href="/h2">Database</a>
+            <a class="btn btn-primary m-1" role="button" href="/add_component">Add new component</a>
+            <a class="btn btn-primary m-1" role="button" href="/components">Show all components</a>
+            <a class="btn btn-primary m-1" role="button" href="/orders">Orders</a>
+            <a class="btn btn-primary m-1" role="button" href="/">Main menu</a>
+        </div>
+    </div>
+</body>
+</html>

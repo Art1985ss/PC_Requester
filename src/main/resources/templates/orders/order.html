@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          th:href="@{/bootstrap.css}">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}"></title>
+</head>
+<body class="m-5">
+<div th:replace="fragments::navigation"></div>
+<form class="" method="post" action="/orders">
+    <div th:if="${order.id != 0}">
+        <p th:text="'ID ' + ${order.id}"></p>
+    </div>
+    <div th:if="${order.registrationDate != null}">
+        <p th:text="${#temporals.format(order.registrationDate, 'dd-MM-yyyy HH:mm')}"></p>
+    </div>
+    <div>
+        <p th:text="'Total price ' + ${order.totalPrice}"></p>
+    </div>
+    <div>
+        <label class="row" for="justification">Name</label>
+        <textarea class="row" type="text" rows="5" cols="40" placeholder="Your input text"
+                  id="justification" name="justification" th:text="${order.justification} ? ${order.justification} : ''"></textarea>
+    </div>
+    <input type="hidden" th:value="${order.id}" th:name="id">
+    <input class="row m-2" type="submit" value="Submit order">
+</form>
+<div>
+    <div class="card m-1 w-25" th:each="component:${order.components}">
+        <div class="card-header" th:text="${component.name} +' '+${component.id}">Header</div>
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td th:text="${component.company}"></td>
+                    <td th:text="${component.price} + ' euro'"></td>
+                </tr>
+            </table>
+            <form method="post" action="/orders/remove_component">
+                <input type="hidden" th:value="${component.id}" th:name="componentId">
+                <input type="hidden" th:value="${order.id}" th:name="orderId">
+                <input class="btn btn-dark" type="submit" value="Remove">
+            </form>
+        </div>
+    </div>
+</div>
+<form method="get" action="/components">
+    <input type="hidden" th:value="${order.id}" th:name="orderId">
+    <input class="btn btn-dark" type="submit" value="Manage components">
+</form>
+</body>
+</html>

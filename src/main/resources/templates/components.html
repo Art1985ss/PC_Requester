@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.css" th:href="@{/bootstrap.css}">
+    <title th:text="${title}"></title>
+</head>
+<body>
+<div th:replace="fragments::navigation"></div>
+<div th:if="${order != null}">
+    <form method="get" action="/orders/manage">
+        <input type="hidden" th:value="${order.id}" th:name="id">
+        <input class="btn btn-secondary" type="submit" value="Return">
+    </form>
+</div>
+<div class="card m-1 w-25" th:each="component:${components}">
+    <div class="card-header" th:text="${component.name}">Header</div>
+    <div class="card-body">
+        <table class="table">
+            <tr>
+                <th>Manufacturer</th>
+                <th>Price</th>
+            </tr>
+            <tr>
+                <td th:text="${component.company}"></td>
+                <td th:text="${component.price} + ' euro'"></td>
+            </tr>
+        </table>
+        <form th:if="${order != null}" method="post" action="/orders/add_component">
+            <input type="hidden" th:value="${order.id}" th:name="orderId">
+            <input type="hidden" th:value="${component.id}" th:name="componentId">
+            <input class="btn btn-dark" type="submit" value="Select">
+        </form>
+        <form th:if="${order == null}" method="get" action="/components/delete">
+            <input type="hidden" th:value="${component.id}" th:name="id">
+            <input class="btn btn-dark" type="submit" value="Delete">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
